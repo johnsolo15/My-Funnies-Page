@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+                <h1>Sign In</h1>
+                {{ wtf.quick_form(form) }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+                <p class="text-center">Don't have an account?</p>
+                <a href="{{ url_for('register') }}" class="btn btn-success btn-block">Sign Up</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+    {% if title %}
+        {{ title }} | My Funnies Page
+    {% else %}
+        My Funnies Page
+    {% endif %}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="{{ url_for('index') }}" class="navbar-brand">The Funnies</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">My comics</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('register') }}">Sign Up</a></li>
+                    <li><a href="{{ url_for('login') }}">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == "message" %}
+                <div class="alert alert-warning">{{ message }}</div>
+            {% else %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% block page %}{% endblock %}
+{% endblock %}
