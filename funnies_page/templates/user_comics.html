@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block page %}
+    <div class="container-fluid">
+        <h1>Hi, {{ current_user.email }}</h1>
+        <p>
+            Here are your comics!
+        </p>
+    </div>
+{% endblock %}
