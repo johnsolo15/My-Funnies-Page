@@ -1,0 +1,9 @@
+.no-deco, .no-deco:link, .no-deco:visited {
+    text-decoration: none;
+    color: darkslategray;
+}
+
+.no-deco:hover, .no-deco:active  {
+    text-decoration: none;
+    color: darkgray;
+}
