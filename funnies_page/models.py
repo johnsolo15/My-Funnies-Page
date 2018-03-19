@@ -1,10 +1,10 @@
-from funnies_page import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from funnies_page import db, login
 
 @login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<User {}:{}>'.format(self.id, self.email) 
+        return '<User {}:{}>'.format(self.id, self.email)
 
 class Comic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,4 +26,5 @@ class Comic(db.Model):
     source = db.Column(db.String(140))
 
     def __repr__(self):
-        return '<Comic {}:{}>'.format(self.id, self.name) 
+        return '<Comic {}:{}>'.format(self.id, self.name)
+ 
