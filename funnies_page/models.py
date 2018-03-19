@@ -19,3 +19,11 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {}:{}>'.format(self.id, self.email) 
+
+class Comic(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(40), index=True)
+    source = db.Column(db.String(140))
+
+    def __repr__(self):
+        return '<Comic {}:{}>'.format(self.id, self.name) 
