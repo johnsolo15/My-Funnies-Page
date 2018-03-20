@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
 {% block page %}
-    <div class="container">
-        <h1>Comics <br class="visible-xs"><small>from around the web</small></h1>
-        <br>
-        <div class="row">
-            {% for section in comics|slice(4) %}
-                <div class="col-sm-6 col-lg-3">
-                {% for comic in section %}
-                    <p>
-                        <a class="no-deco" href="{{ url_for('comic', name=comic.name.replace(' ','').lower()) }}">{{ comic.name }}</a>
-                        <button class="btn btn-primary btn-xs pull-right">Follow</button>
-                    </p>
-                {% endfor %}
-                </div>
+<div class="container">
+    <h1>Comics <br class="visible-xs"><small class="no-wrap">from around the web</small></h1>
+    <br>
+    <div class="row">
+        {% for section in comics|slice(2) %}
+        <div class="col-sm-6">
+            {% for comic in section %}
+            <p>
+                <a class="comic-link no-wrap btn btn-default btn-s" href="{{ url_for('comic', name=comic.name.replace(' ','_')) }}">{{ comic.name }}</a>
+                <button class="btn btn-primary btn-s">Follow</button>
+            </p>
             {% endfor %}
         </div>
+        {% endfor %}
     </div>
+</div>
 {% endblock %}

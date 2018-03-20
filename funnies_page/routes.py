@@ -2,25 +2,13 @@ from flask import render_template, url_for, flash, redirect, request
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from funnies_page import app, db
-from funnies_page.models import User
+from funnies_page.models import User, Comic
 from funnies_page.forms import LoginForm, RegisterForm
 
 @app.route('/')
 @app.route('/home')
 def index():
-    #fake comic data
-    comics = [
-        {'name': 'Dilbert', 'url': '#'},
-        {'name': 'Zits', 'url': '#'},
-        {'name': 'Baby Blues', 'url': '#'},
-        {'name': 'Sherman', 'url': '#'},
-        {'name': 'Non Sequitur', 'url': '#'},
-        {'name': 'WuMo', 'url': '#'},
-        {'name': 'Broom Hilda', 'url': '#'},
-        {'name': 'Peanuts', 'url': '#'},
-        {'name': 'Frazz', 'url': '#'},
-        {'name': 'Foxtrot', 'url': '#'}
-    ]
+    comics = Comic.query.order_by(db.collate(Comic.name, 'NOCASE')).all()
     return render_template('comics_list.html', comics=comics)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -61,8 +49,8 @@ def register():
 
 @app.route('/comic/<name>')
 def comic(name):
-    #fake page
-    return 'This is a page for ' + name
+    comic = Comic.query.filter_by(name=name.replace('_', ' ')).first()
+    return render_template('comic.html', title=comic.name, comic=comic)
 
 @app.route('/user/comics')
 @login_required
