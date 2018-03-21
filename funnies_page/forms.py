@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
-from funnies_page.models import User
+from funnies_page import mongo
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -15,6 +15,6 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = mongo.db.users.find_one({'email': email.data})
         if user is not None:
             raise ValidationError('That email is already in use.')

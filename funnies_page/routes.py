@@ -1,14 +1,14 @@
 from flask import render_template, url_for, flash, redirect, request
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
-from funnies_page import app, db
-from funnies_page.models import User, Comic
+from funnies_page import app, mongo
+from funnies_page.models import User
 from funnies_page.forms import LoginForm, RegisterForm
 
 @app.route('/')
 @app.route('/home')
 def index():
-    comics = Comic.query.order_by(db.collate(Comic.name, 'NOCASE')).all()
+    comics = mongo.db.comics.find().sort('name', 1).collation({'locale':'en', 'caseLevel': False})
     return render_template('comics_list.html', comics=comics)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -17,9 +17,13 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Username or password is incorrect', 'danger')
+        user_doc = mongo.db.users.find_one({'email': form.email.data})
+        if user_doc is None:
+            flash('Email is incorrect', 'danger')
+            return redirect(url_for('login'))
+        user = User(user_doc)
+        if not user.check_password(form.password.data):
+            flash('Password is incorrect', 'danger')
             return redirect(url_for('login'))
         login_user(user, remember=True)
         next_page = request.args.get('next')
@@ -39,18 +43,21 @@ def register():
         return redirect(url_for('index'))
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
+        mongo.db.users.insert_one(
+            {
+                'email': form.email.data,
+                'password': User.hash_password(form.password.data)
+            }
+        )
         flash('Your are now registered! Please sign in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Sign Up', form=form)
 
 @app.route('/comic/<name>')
 def comic(name):
-    comic = Comic.query.filter_by(name=name.replace('_', ' ')).first()
-    return render_template('comic.html', title=comic.name, comic=comic)
+    name = name.replace('_', ' ')
+    comic = mongo.db.comics.find_one({'name': name})
+    return render_template('comic.html', title=comic['name'], comic=comic)
 
 @app.route('/user/comics')
 @login_required

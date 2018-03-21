@@ -1,14 +1,12 @@
-from funnies_page import db
-from funnies_page.models import Comic
+from funnies_page import app, mongo
 from comic_scraper import scrape_gocomics, scrape_comicskingdom
 
-def load_db():
-    comics = scrape_gocomics() + scrape_comicskingdom()
-    for c in comics:
-        comic = Comic(name=c['name'], source=c['src'])
-        db.session.add(comic)
-    db.session.commit()
-    print('Database populated')
+def main():
+    with app.app_context():
+        comics = scrape_gocomics() + scrape_comicskingdom()
+        mongo.db.comics.drop()
+        mongo.db.comics.insert_many(comics)
+        print('Database populated')
 
 if __name__ == '__main__':
-    load_db()
+    main()

@@ -4,7 +4,7 @@
 <div class="container text-center">
     <h3 class="text-center">{{ comic.name }}</h3>
     <div style="display:inline-block">
-        <img src="{{ comic.source }}" class="img-responsive" alt="{{ comic.name }}">
+        <img src="{{ comic['src'] }}" class="img-responsive" alt="{{ comic['name'] }}">
         <button style="margin-top: 10px" class="btn btn-primary btn-lg hidden-xs pull-left">Follow</button>
         <button style="margin-top: 10px" class="btn btn-primary btn-s visible-xs-inline pull-left">Follow</button>
     </div>

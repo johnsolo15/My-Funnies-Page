@@ -9,7 +9,7 @@
         <div class="col-sm-6">
             {% for comic in section %}
             <p>
-                <a class="comic-link no-wrap btn btn-default btn-s" href="{{ url_for('comic', name=comic.name.replace(' ','_')) }}">{{ comic.name }}</a>
+                <a class="comic-link no-wrap btn btn-default btn-s" href="{{ url_for('comic', name=comic['name'].replace(' ','_')) }}">{{ comic['name'] }}</a>
                 <button class="btn btn-primary btn-s">Follow</button>
             </p>
             {% endfor %}
