@@ -1,20 +1,26 @@
 {% extends "base.html" %}
 
 {% block page %}
-<div class="container">
-    <h1>Comics <br class="visible-xs"><small class="no-wrap">from around the web</small></h1>
-    <br>
-    <div class="row">
-        {% for section in comics|slice(2) %}
-        <div class="col-sm-6">
-            {% for comic in section %}
-            <p>
-                <a class="comic-link no-wrap btn btn-default btn-s" href="{{ url_for('comic', name=comic['name'].replace(' ','_')) }}">{{ comic['name'] }}</a>
-                <button class="btn btn-primary btn-s">Follow</button>
-            </p>
+    <div class="container">
+        <h1>Comics <br class="visible-xs"><small class="no-wrap">from around the web</small></h1>
+        <br>
+        <div class="row">
+            {% for section in comics|slice(2) %}
+            <div class="col-sm-6">
+                {% for comic in section %}
+                <p>
+                    <a class="comic-link no-wrap btn btn-default btn-s" href="{{ url_for('comic', name=comic.name.replace(' ','_')) }}">{{ comic.name }}</a>
+                    {% if comic['name'] in current_user.followed %}
+                    <button class="btn btn-danger btn-s pull-right" type="button" onclick="unfollow(this, '{{ comic.name }}')">Unfollow</button>
+                    {% elif not current_user.is_authenticated %}
+                    <a class="btn btn-primary btn-s pull-right" type="button" href="{{ url_for('register') }}">Follow</a>
+                    {% else %}
+                    <button class="btn btn-primary btn-s pull-right" type="button" onclick="follow(this, '{{ comic.name }}')">Follow</button>
+                    {% endif %}
+                </p>
+                {% endfor %}
+            </div>
             {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
 {% endblock %}

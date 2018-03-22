@@ -15,6 +15,10 @@ class User(UserMixin):
         self.id = str(user_doc['_id'])
         self.email = user_doc['email']
         self.password_hash = user_doc['password']
+        if 'followed' in user_doc:
+            self.followed = user_doc['followed']
+        else:
+            self.followed = []
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

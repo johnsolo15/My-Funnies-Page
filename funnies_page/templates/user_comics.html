@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block page %}
-    <div class="container-fluid">
+    <div class="container">
         <h1>Hi, {{ current_user.email }}</h1>
-        <p>
-            Here are your comics!
-        </p>
+        {% for comic in comics %}
+        <div>
+            <h3 class="text-center">{{ comic.name }}</h3>
+            <img src="{{ comic.src }}" class="img-responsive center-block" alt="{{ comic.name }}">
+        </div>
+        {% endfor %}
     </div>
 {% endblock %}

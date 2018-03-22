@@ -57,3 +57,31 @@
 
     {% block page %}{% endblock %}
 {% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script>
+        function follow(button, name) {
+            $.post('/follow', {
+                comic_name: name
+            }).done(function() {
+                $(button).text('Unfollow').removeClass('btn-primary').addClass('btn-danger')
+                         .attr('onclick', 'unfollow(this, "' + name + '")');
+            }).fail(function() {
+                alert('Sorry, we could not contact server')
+            });
+        }
+
+        function unfollow(button, name) {
+            $.post('/unfollow', {
+                comic_name: name
+            }).done(function() {
+                $(button).text('Follow').removeClass('btn-danger').addClass('btn-primary')
+                         .attr('onclick', 'follow(this, "' + name + '")');
+            }).fail(function() {
+                alert('Sorry, we could not contact server')
+            });
+        }
+    </script>
+{% endblock %}

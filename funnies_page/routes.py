@@ -62,4 +62,29 @@ def comic(name):
 @app.route('/user/comics')
 @login_required
 def user_comics():
-    return render_template('user_comics.html')
+    comics = []
+    for comic in current_user.followed:
+        comics.append(mongo.db.comics.find_one({'name': comic}))
+    return render_template('user_comics.html', comics=comics)
+
+@app.route('/follow', methods=['POST'])
+@login_required
+def follow():
+    comic_name = request.form['comic_name']
+    email = current_user.email
+    result = mongo.db.users.update_one(
+        {'email': email},
+        {'$addToSet': {'followed': comic_name}}
+    )
+    return 'Matched: ' + str(result.matched_count) + ', Modified: ' + str(result.modified_count)
+
+@app.route('/unfollow', methods=['POST'])
+@login_required
+def unfollow():
+    comic_name = request.form['comic_name']
+    email = current_user.email
+    result = mongo.db.users.update_one(
+        {'email': email},
+        {'$pull': {'followed': comic_name}}
+    )
+    return 'Matched: ' + str(result.matched_count) + ', Modified: ' + str(result.modified_count)

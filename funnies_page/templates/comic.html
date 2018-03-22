@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block page %}
-<div class="container text-center">
-    <h3 class="text-center">{{ comic.name }}</h3>
-    <div style="display:inline-block">
-        <img src="{{ comic['src'] }}" class="img-responsive" alt="{{ comic['name'] }}">
-        <button style="margin-top: 10px" class="btn btn-primary btn-lg hidden-xs pull-left">Follow</button>
-        <button style="margin-top: 10px" class="btn btn-primary btn-s visible-xs-inline pull-left">Follow</button>
+    <div class="container text-center">
+        <div style="display:inline-block">
+            <h3 class="text-center">{{ comic.name }}</h3>
+            <img src="{{ comic.src }}" class="img-responsive" alt="{{ comic.name }}">
+            <button style="margin-top: 10px" class="btn btn-primary btn-lg hidden-xs pull-left" type="button" onclick="follow(this, '{{ comic.name }}')">Follow</button>
+            <button style="margin-top: 10px" class="btn btn-primary btn-s visible-xs-inline pull-left" type="button" onclick="follow(this, '{{ comic.name }}')">Follow</button>
+        </div>
     </div>
-</div>
 {% endblock %}
