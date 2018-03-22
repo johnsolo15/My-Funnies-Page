@@ -13,4 +13,4 @@ login.login_view = 'login'
 mongo = PyMongo(app)
 
 
-from funnies_page import routes, models
+from funnies_page import routes

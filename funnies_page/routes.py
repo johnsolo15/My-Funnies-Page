@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from funnies_page import app, mongo
-from funnies_page.models import User
+from funnies_page.user import User
 from funnies_page.forms import LoginForm, RegisterForm
 
 @app.route('/')
